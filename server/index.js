@@ -42,7 +42,7 @@ const createApp = () => {
 
   // session middleware with passport
   app.use(session({
-    secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+    secret: process.env.SESSION_SECRET || 'shhh...secrets',
     store: sessionStore,
     resave: false,
     saveUninitialized: false
@@ -87,7 +87,7 @@ const startListening = () => {
 
 }
 
-const syncDb = () => db.sync({force: true})
+const syncDb = () => db.sync(/*{force: true}*/)
 
 // This evaluates as true when this file is run directly from the command line,
 // i.e. when we say 'node server/index.js' (or 'nodemon server/index.js', or 'nodemon server', etc)
