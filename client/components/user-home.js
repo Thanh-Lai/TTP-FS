@@ -12,6 +12,7 @@ class UserHome extends Component {
     super(props)
     this.state = {
       transactions: [],
+      cash: 5000
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   }
@@ -30,6 +31,7 @@ render() {
     <div>
       <h3>Welcome, {this.props.userName}</h3>
 
+      <div id="cash">Balance: ${this.state.cash}</div>
       <form onSubmit={this.handleSubmit} name={name}>
         <div>
           <label htmlFor="ticker"><small>Ticker</small></label>
