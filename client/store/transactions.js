@@ -14,9 +14,9 @@ const getTransactions = allTransactions => ({type: GET_TRANSACTIONS, allTransact
 const createTransaction = transaction => ({type: POST_TRANSACTION, transaction})
 
 //Thunk creators
-export const fetchTransactions = () => {
+export const fetchTransactions = (id) => {
     return dispatch => {
-        axios.get('/api/transactions')
+        axios.get(`/api/transactions/${id}`)
             .then(res => res.data)
             .then(allTransactions => {
                 dispatch(getTransactions(allTransactions))

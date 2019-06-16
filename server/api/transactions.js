@@ -1,13 +1,13 @@
 const router = require('express').Router()
-const { Transactions, User } = require('../db/models')
+const { Transactions } = require('../db/models')
 
 module.exports = router
 
 //Get all transactions api
-router.get('/', (req, res, next) => {
-    Transactions.findAll()
+router.get('/:id', (req, res, next) => {
+    Transactions.findAll({where: {userId: req.params.id}})
         .then(transactions => {
-            res.send(transactions)
+            res.json(transactions)
         })
         .catch(next)
 })

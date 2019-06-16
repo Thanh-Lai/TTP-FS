@@ -5,12 +5,12 @@ import { postTransaction } from '../store/transactions'
 import { putBalance } from '../store/user'
 import { iexToken } from '../../secrets'
 import axios from 'axios'
+import Portfolio from './portfolio'
 
 class UserHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      transactions: [],
       cash: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -18,7 +18,9 @@ class UserHome extends Component {
   }
 
   componentDidMount() {
-    this.setState({ cash: this.props.cash})
+    this.setState({ 
+      cash: this.props.cash,
+    })
   }
 
   fetchStockPrice = async (symbol) => {
@@ -27,7 +29,6 @@ class UserHome extends Component {
     } catch (err) {
       console.log(err)
     }
-
   }
 
   handleSubmit(event) {
@@ -48,7 +49,7 @@ class UserHome extends Component {
           })
           //Update Balance and addTransaction
           this.props.updateBalance({ id: this.props.id, balance: transaction })
-          this.props.addTransaction({ symbol: symbol, quantity: quantity, price: price })
+          this.props.addTransaction({ symbol: symbol, quantity: quantity, price: price, userId: this.props.id })
         }
       })
       .catch(err => {
@@ -57,26 +58,27 @@ class UserHome extends Component {
       })
   }
   render() {
-
     return (
       <div>
         <h3>Welcome, {this.props.userName}</h3>
-
-        <div id="cash">Cash: ${this.state.cash}</div>
-        <form onSubmit={this.handleSubmit} name={name}>
-          <div>
-            <label htmlFor="symbol"><small>Symbol</small></label>
-            <input name="symbol" type="text" />
-          </div>
-          <div>
-            <label htmlFor="quantity"><small>Quantity</small></label>
-            <input name="quantity" type="text" />
-          </div>
-          <div>
-            <button type="submit">Buy</button>
-          </div>
-          {/* {error && error.response && <div> {error.response.data} </div>} */}
-        </form>
+        <div id="buy">
+          <div id="cash">Cash: ${this.state.cash}</div>
+          <form onSubmit={this.handleSubmit} name={name}>
+            <div>
+              <label htmlFor="symbol"><small>Symbol</small></label>
+              <input name="symbol" type="text" />
+            </div>
+            <div>
+              <label htmlFor="quantity"><small>Quantity</small></label>
+              <input name="quantity" type="text" />
+            </div>
+            <div>
+              <button type="submit">Buy</button>
+            </div>
+            {/* {error && error.response && <div> {error.response.data} </div>} */}
+          </form>
+        </div>
+        <Portfolio />
       </div>
     )
   }
@@ -88,7 +90,7 @@ const mapState = (state) => {
   return {
     userName: state.user.userName,
     cash: state.user.cash,
-    id: state.user.id
+    id: state.user.id,
   }
 }
 
@@ -108,5 +110,4 @@ export default connect(mapState, mapDispatch)(UserHome)
 //Prop Types
 UserHome.propTypes = {
   userName: PropTypes.string,
-  // cash: PropTypes.number
 }
