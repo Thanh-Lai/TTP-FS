@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const { Transactions } = require('../db/models')
+const { Transactions, User } = require('../db/models')
+
 module.exports = router
 
-//Get all transactions
+//Get all transactions api
 router.get('/', (req, res, next) => {
     Transactions.findAll()
         .then(transactions => {
@@ -12,11 +13,12 @@ router.get('/', (req, res, next) => {
 })
 
 
-//Post transactions
+//Post transactions api
 router.post('/', (req, res, next) => {
     Transactions.create(req.body)
         .then(createdTransaction => {
-            res.status(200).json(createdTransaction)
+            console.log('in transaction post ',createdTransaction)
+            res.status(201).json(createdTransaction)
         })
         .catch(next)
 })

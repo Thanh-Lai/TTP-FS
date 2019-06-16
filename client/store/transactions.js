@@ -30,7 +30,6 @@ export const postTransaction = (transaction) => {
         axios.post('/api/transactions', transaction)
             .then(res => res.data)
             .then(createdTransaction => {
-                // console.log('Hello',createTransaction)
                 dispatch(createTransaction(createdTransaction))
             })
             .catch(console.error)

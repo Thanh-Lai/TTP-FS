@@ -20,11 +20,15 @@ const User = db.define('user', {
       return () => this.getDataValue('password')
     }
   },
+  cash: {
+    type: Sequelize.DECIMAL(10, 2),
+    defaultValue: 5000,
+  },
   salt: {
     type: Sequelize.STRING,
     // Making `.salt` act like a function hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
-    get () {
+    get() {
       return () => this.getDataValue('salt')
     }
   },
