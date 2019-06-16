@@ -39,7 +39,6 @@ class UserHome extends Component {
     this.fetchStockPrice(symbol)
       .then(res => res.data)
       .then(price => {
-        if (typeof price !== "number") alert(`${symbol} is not a valid symbol.`)
         const transaction = (this.state.cash - Number((Number.parseFloat(price) * Number.parseFloat(quantity)))).toFixed(2)
         //Only allows transaction if balance is greater than 0
         if (transaction <= 0) alert('Sorry you do not have enough cash.')
@@ -47,11 +46,13 @@ class UserHome extends Component {
           this.setState({
             cash: transaction
           })
+          //Update Balance and addTransaction
           this.props.updateBalance({ id: this.props.id, balance: transaction })
           this.props.addTransaction({ symbol: symbol, quantity: quantity, price: price })
         }
       })
       .catch(err => {
+        alert(`${symbol} is not a valid symbol.`)
         console.log(err)
       })
   }
