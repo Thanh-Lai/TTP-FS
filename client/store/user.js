@@ -33,7 +33,6 @@ export const fetchBalance = (id) => {
 
 export const putBalance = (balance) => {
   return dispatch => {
-    console.log('in store',balance)
     axios.put(`/api/users/${balance.id}`, balance)
       .then(res => res.data)
       .then(updatedBalance => {

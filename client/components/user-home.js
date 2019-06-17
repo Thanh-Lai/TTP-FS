@@ -18,6 +18,7 @@ class UserHome extends Component {
   }
 
   componentDidMount() {
+    // this.props.userTransactions(this.props.id)
     this.setState({ 
       cash: this.props.cash,
     })
@@ -78,7 +79,7 @@ class UserHome extends Component {
             {/* {error && error.response && <div> {error.response.data} </div>} */}
           </form>
         </div>
-        <Portfolio />
+        <Portfolio transactions={this.props.transactions} />
       </div>
     )
   }
@@ -90,7 +91,7 @@ const mapState = (state) => {
   return {
     userName: state.user.userName,
     cash: state.user.cash,
-    id: state.user.id,
+    id: state.user.id
   }
 }
 
