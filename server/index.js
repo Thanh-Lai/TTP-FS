@@ -10,7 +10,6 @@ const db = require('./db')
 const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
-const socketio = require('socket.io')
 module.exports = app
 
 /**
@@ -43,7 +42,7 @@ const createApp = () => {
 
   // session middleware with passport
   app.use(session({
-    secret: process.env.SESSION_SECRET || 'my best friend is Cody',
+    secret: process.env.SESSION_SECRET || 'shhh...secrets',
     store: sessionStore,
     resave: false,
     saveUninitialized: false
@@ -86,12 +85,9 @@ const startListening = () => {
   // start listening (and create a 'server' object representing our server)
   const server = app.listen(PORT, () => console.log(`Mixing it up on port ${PORT}`))
 
-  // set up our socket control center
-  const io = socketio(server)
-  require('./socket')(io)
 }
 
-const syncDb = () => db.sync()
+const syncDb = () => db.sync(/*{force: true}*/)
 
 // This evaluates as true when this file is run directly from the command line,
 // i.e. when we say 'node server/index.js' (or 'nodemon server/index.js', or 'nodemon server', etc)
