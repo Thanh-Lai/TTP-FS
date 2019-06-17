@@ -31,7 +31,6 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
     Transactions.create(req.body)
         .then(createdTransaction => {
-            console.log('in transaction post ', createdTransaction)
             res.status(201).json(createdTransaction)
         })
         .catch(next)

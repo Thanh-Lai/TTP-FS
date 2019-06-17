@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 
 const PortfolioItem = (props) => {
-    // console.log('items',props.portfolio)
 
     const style = { border: "1px solid black" };
 

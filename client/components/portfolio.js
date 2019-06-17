@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { connect } from 'react-redux'
-// import { fetchTransactions } from '../store/transactions'
 import { iexToken } from '../../secrets'
 import PortfolioItem from './portfolio-list'
 

@@ -18,7 +18,6 @@ class UserHome extends Component {
   }
 
   componentDidMount() {
-    // this.props.userTransactions(this.props.id)
     this.setState({ 
       cash: this.props.cash,
     })
