@@ -10,7 +10,8 @@ class Portfolio extends Component {
         super(props)
         this.state = {
             uniqueTransactions: [],
-            openPrice: {}
+            openPrice: {},
+            currPrice: {}
         }
         this.fetchOHLC = this.fetchOHLC.bind(this)
         this.fetchTransactions = this.fetchTransactions.bind(this)
@@ -38,7 +39,7 @@ class Portfolio extends Component {
         const res = await axios.get(`/api/transactions/${id}`)
         this.setState({ uniqueTransactions: res.data })
         const temp = {}
-        let priceData = {}
+        const tempCurrPrice = {}
         res.data.map(transaction => {
             const symbol = transaction.symbol;
             this.fetchOHLC(symbol)
@@ -50,14 +51,13 @@ class Portfolio extends Component {
             this.fetchCurrPrice(symbol)
                 .then(res => res.data)
                 .then(data => {
-                    temp[symbol]['currPrice'] = data
-                })
+                        tempCurrPrice[symbol] = data;
+                    })
         })
 
         setTimeout(() => {
-            priceData = temp
-            this.setState({ openPrice: priceData })
-        }, 300);
+            this.setState({ openPrice: temp, currPrice: tempCurrPrice })
+        }, 200);
     }
 
 
@@ -65,11 +65,11 @@ class Portfolio extends Component {
         this.fetchTransactions(this.props.id)
         setInterval(() => {
             this.fetchTransactions(this.props.id)
-        }, 1000)
+        }, 500)
     }
 
     render() {
-        return <PortfolioItem portfolio={this.state.uniqueTransactions} price={this.state.openPrice} />
+        return <PortfolioItem portfolio={this.state.uniqueTransactions} price={this.state.openPrice} currPrice = {this.state.currPrice}/>
     }
 }
 const mapState = (state) => {
