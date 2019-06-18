@@ -19,20 +19,7 @@ export const fetchTransactions = (id) => {
         axios.get(`/api/transactions/${id}`)
             .then(res => res.data)
             .then(allTransactions => {
-                let uniqueCheck = {}
-                const uniqueTranactions = [];
-                allTransactions.forEach(transaction => {
-                    const symbol = transaction.symbol
-                    if (uniqueCheck[symbol]) {
-                        uniqueCheck[symbol].quantity += transaction.quantity;
-                    } else {
-                        uniqueCheck[symbol] = transaction
-                    }
-                })
-                for (let key in uniqueCheck) {
-                    uniqueTranactions.push(uniqueCheck[key])
-                }
-                dispatch(getTransactions(uniqueTranactions))
+                dispatch(getTransactions(allTransactions))
             })
             .catch(console.error)
     }
