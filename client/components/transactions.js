@@ -6,14 +6,45 @@ class Transactions extends Component {
 
     componentDidMount() {
         this.props.getTransactions(this.props.id)
-        console.log(this.props.id)
     }
 
-
-
     render() {
-        console.log('trans',this.props.transactions)
-        return <h1>Hi asdfjaksdfjaksdfja'skdfjad</h1>
+        const style = { border: "1px solid black" };
+        console.log(this.props.transactions)
+        return (
+            <div>
+                <h1>Your Transactions</h1>
+                <table style={style}>
+                    <thead>
+                        <tr>
+                            <th style={style}>Symbol</th>
+                            <th style={style}>Shares</th>
+                            <th style={style}>Price</th>
+                            <th style={style}>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.transactions.map(item => {
+                            const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff" };
+                            const datePurchased = new Date(item.createdAt)
+                            const month = datePurchased.getMonth() +1
+                            const day = datePurchased.getDate()
+                            const year =datePurchased.getFullYear()
+
+                            return (
+                                <tr key={item.id}>
+                                    <td style={dataStyle}>{item.symbol}</td>
+                                    <td style={dataStyle}>{item.quantity}</td>
+                                    <td style={dataStyle}>$ {item.price}</td>
+                                    <td style={dataStyle}>{`${month}/${day}/${year}`}</td>
+                                </tr>
+                            )
+                        })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        )
     }
 
 }
