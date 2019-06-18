@@ -10,7 +10,7 @@ class Transactions extends Component {
 
     render() {
         const style = { border: "1px solid black" };
-        console.log(this.props.transactions)
+        
         return (
             <div>
                 <h1>Your Transactions</h1>
