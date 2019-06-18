@@ -1,12 +1,10 @@
 import React from 'react'
 
-
 const PortfolioItem = (props) => {
 
     const style = { border: "1px solid black" };
 
     return (
-
         <table style={style}>
             <thead>
                 <tr>

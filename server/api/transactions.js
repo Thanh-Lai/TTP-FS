@@ -7,6 +7,15 @@ module.exports = router
 router.get('/:id', (req, res, next) => {
     Transactions.findAll({ where: { userId: req.params.id } })
         .then(transactions => {
+            res.status(200).json(transactions)
+        })
+        .catch(next)
+})
+
+//Get all unique transactions api
+router.get('/unique/:id', (req, res, next) => {
+    Transactions.findAll({ where: { userId: req.params.id } })
+        .then(transactions => {
             const unique = {};
             const allUnique = [];
             transactions.forEach(transaction => {
@@ -21,7 +30,7 @@ router.get('/:id', (req, res, next) => {
             for (let key in unique) {
                 allUnique.push(unique[key])
             }
-            res.json(allUnique)
+            res.status(200).json(allUnique)
         })
         .catch(next)
 })
