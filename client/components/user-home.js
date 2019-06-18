@@ -6,6 +6,8 @@ import { putBalance } from '../store/user'
 import { iexToken } from '../../secrets'
 import axios from 'axios'
 import Portfolio from './portfolio'
+import TextField from '@material-ui/core/TextField'
+
 
 class UserHome extends Component {
   constructor(props) {
@@ -60,7 +62,7 @@ class UserHome extends Component {
   render() {
     return (
       <div>
-        <h3>Welcome, {this.props.userName}</h3>
+        <h3>Welcome {this.props.userName}</h3>
         <div id="buy">
           <div id="cash">Cash: ${this.state.cash}</div>
           <form onSubmit={this.handleSubmit} name={name}>
