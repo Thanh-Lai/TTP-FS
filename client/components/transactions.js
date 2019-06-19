@@ -9,13 +9,13 @@ class Transactions extends Component {
     }
 
     render() {
-        const style = { border: "1px solid black" };
-        
+        const style = { border: "1px solid black", width: "430px"};
+        const styleHead = {color: 'white', backgroundColor: 'black'}
         return (
             <div>
-                <h1>Your Transactions</h1>
+                <h2>Your Transactions</h2>
                 <table style={style}>
-                    <thead>
+                    <thead style={styleHead}>
                         <tr>
                             <th style={style}>Symbol</th>
                             <th style={style}>Shares</th>
