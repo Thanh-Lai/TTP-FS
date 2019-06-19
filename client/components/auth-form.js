@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AuthForm = (props) => {
-  const { name, displayName, handleSubmit, error } = props
+  const { name, displayName, handleSubmit } = props
   const classes = useStyles();
 
   return (
@@ -148,6 +148,5 @@ export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
 AuthForm.propTypes = {
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.object
+  handleSubmit: PropTypes.func.isRequired
 }

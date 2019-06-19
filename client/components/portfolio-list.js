@@ -1,46 +1,48 @@
 import React from 'react'
+import Container from '@material-ui/core/Container'
+
+
 
 const PortfolioItem = (props) => {
-
-    const style = { border: "1px solid black" };
+    const style = { border: "1px solid black", width: "430px" };
+    const alignCenter = {textAlign: 'center'}
+    const styleHead = {color: 'white', backgroundColor: 'black'}
 
     return (
-        <table style={style}>
-            <thead>
-                <tr>
-                    <th style={style}>Symbol</th>
-                    <th style={style}>Shares</th>
-                    <th style={style}>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                {props.portfolio.map(item => {
-                    const value = (props.price[item.symbol] * item.quantity).toFixed(2) === 'NaN' ? null : (props.price[item.symbol] * item.quantity).toFixed(2)
-                    const pricePerformance = props.currPrice - props.price
-                    let dynamicColor;
-                    switch (pricePerformance) {
-                        case pricePerformance > 0:
-                            dynamicColor = 'green'
-                            break;
-                        case pricePerformance < 0:
-                            dynamicColor = 'green'
-                            break;
-                        default:
-                            dynamicColor = 'green'
-                    }
+        <Container component="main" maxWidth="xs">
+            <h1 style={alignCenter}>Portfolio</h1>
+            <table style={style}>
+                <thead style={styleHead}>
+                    <tr>
+                        <th style={style}>Symbol</th>
+                        <th style={style}>Shares</th>
+                        <th style={style}>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.portfolio.map(item => {
+                        const value = (props.openPrice[item.symbol] * item.quantity).toFixed(2) === 'NaN' ? null : (props.openPrice[item.symbol] * item.quantity).toFixed(2)
+                        const pricePerformance = Number(props.currPrice[item.symbol] - props.openPrice[item.symbol])
+                        const dynamicColor = performance => {
+                            if (performance > 0) return 'green'
+                            if (performance < 0) return 'red'
+                            if (performance === 0) return 'grey'
+                            return 'black'
+                        }
 
-                    const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff", color: dynamicColor };
-                    return (
-                        <tr key={item.id}>
-                            <td style={dataStyle}>{item.symbol}</td>
-                            <td style={dataStyle}>{item.quantity}</td>
-                            <td style={dataStyle}>$ {value}</td>
-                        </tr>
-                    )
-                })
-                }
-            </tbody>
-        </table>
+                        const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff", color: dynamicColor(pricePerformance) };
+                        return (
+                            <tr key={item.id}>
+                                <td style={dataStyle}>{item.symbol}</td>
+                                <td style={dataStyle}>{item.quantity}</td>
+                                <td style={dataStyle}>$ {value}</td>
+                            </tr>
+                        )
+                    })
+                    }
+                </tbody>
+            </table>
+        </Container>
     )
 }
 

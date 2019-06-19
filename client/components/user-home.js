@@ -44,7 +44,7 @@ class UserHome extends Component {
     const quantity = event.target.quantity.value
     console.log('sym', event.target.symbol.value)
 
-    if (!Number.isInteger(Number(quantity))) alert('Please enter valid quantity.')
+    if (!Number.isInteger(Number(quantity)) || quantity <=0 ) alert('Please enter valid quantity.')
     // Fetch stock price
     this.fetchStockPrice(symbol)
       .then(res => {
@@ -55,7 +55,7 @@ class UserHome extends Component {
         const transaction = (this.state.cash - Number((Number.parseFloat(price) * Number.parseFloat(quantity)))).toFixed(2)
         //Only allows transaction if balance is greater than 0
         if (transaction <= 0) alert('Sorry you do not have enough cash.')
-        if (transaction > 0 && !Number.isNaN(Number(price)) && Number.isInteger(Number(quantity))) {
+        if (quantity > 0 && transaction > 0 && !Number.isNaN(Number(price)) && Number.isInteger(Number(quantity))) {
           this.setState({
             cash: transaction
           })
@@ -65,7 +65,7 @@ class UserHome extends Component {
         }
       })
       .catch(err => {
-        // alert(`${symbol} is not a valid symbol.`)
+        alert(`${symbol} is not a valid symbol.`)
         console.log(err)
       })
   }
@@ -75,12 +75,12 @@ class UserHome extends Component {
       <div>
         <h2>Welcome {this.props.userName}</h2>
         <div id="buy">
-          <h3 id="cash">Cash: ${this.state.cash}</h3>
+          <h3 id="cash">Balance: ${this.state.cash}</h3>
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div>
               <Typography component="h1" variant="h5">
-                Stocks
+                     Get them while they're hot!
               </Typography>
               <form onSubmit={this.handleSubmit}>
                 <TextField
@@ -119,29 +119,16 @@ class UserHome extends Component {
             </div>
           </Container>
         </div>
+        <div>
+          <br />
+          <br />
+        </div>
         <Portfolio transactions={this.props.transactions} />
       </div>
     )
   }
 
 }
-
-
-//  <form onSubmit={this.handleSubmit} name={name}>
-//             <div>
-//               <label htmlFor="symbol"><small>Symbol</small></label>
-//               <input name="symbol" type="text" />
-//             </div>
-//             <div>
-//               <label htmlFor="quantity"><small>Quantity</small></label>
-//               <input name="quantity" type="text" />
-//             </div>
-//             <div>
-//               <button type="submit">Buy</button>
-//             </div>
-//             {/* {error && error.response && <div> {error.response.data} </div>} */}
-//             </form >
-
 
 //Container
 const mapState = (state) => {

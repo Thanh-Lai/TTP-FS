@@ -63,14 +63,14 @@ class Portfolio extends Component {
 
         this.timeOut = setTimeout(() => {
             this.setState({ openPrice: temp, currPrice: tempCurrPrice })
-        }, 200);
+        }, 500);
     }
 
     componentDidMount() {
         this.fetchTransactions(this.props.id)
         this.timeInterval = setInterval(() => {
             this.fetchTransactions(this.props.id)
-        }, 500)
+        }, 300)
     }
 
     componentWillUnmount() {
@@ -80,7 +80,7 @@ class Portfolio extends Component {
     }
 
     render() {
-        return <PortfolioItem portfolio={this.state.uniqueTransactions} price={this.state.openPrice} currPrice={this.state.currPrice} />
+        return <PortfolioItem portfolio={this.state.uniqueTransactions} openPrice={this.state.openPrice} currPrice={this.state.currPrice} />
     }
 }
 const mapState = (state) => {
