@@ -8,7 +8,6 @@ import Tabs from '@material-ui/core/Tabs';
 
 const Navbar = ({ handleClick, isLoggedIn }) => (
   <div>
-    <h2 >Stock Portfolio</h2>
     <nav>
       {isLoggedIn ? (
         <AppBar position="static">
