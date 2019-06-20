@@ -9,7 +9,7 @@ class Transactions extends Component {
     }
 
     render() {
-        const style = { border: "1px solid black", width: "430px"};
+        const style = { border: '1px solid black', width: '430px'};
         const styleHead = {color: 'white', backgroundColor: 'black'}
         return (
             <div>
@@ -26,9 +26,9 @@ class Transactions extends Component {
                     </thead>
                     <tbody>
                         {this.props.transactions.map(item => {
-                            const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff" };
+                            const dataStyle = { border: '1px solid black', backgroundColor: '#e6e6ff' };
                             const datePurchased = new Date(item.createdAt)
-                            const month = datePurchased.getMonth() +1
+                            const month = datePurchased.getMonth() + 1
                             const day = datePurchased.getDate()
                             const year =datePurchased.getFullYear()
                             const transactionType = item.quantity > 0 ? 'Buy' : 'Sell'
@@ -36,7 +36,7 @@ class Transactions extends Component {
                             return (
                                 <tr key={item.id} style={transactionStyle}>
                                     <td style={dataStyle}>{item.symbol}</td>
-                                    <td style={dataStyle}>{item.quantity}</td>
+                                    <td style={dataStyle}>{Math.abs(item.quantity)}</td>
                                     <td style={dataStyle}>$ {item.price}</td>
                                     <td style={dataStyle}>{transactionType}</td>
                                     <td style={dataStyle}>{`${month}/${day}/${year}`}</td>

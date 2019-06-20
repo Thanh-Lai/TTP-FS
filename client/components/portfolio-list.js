@@ -1,8 +1,6 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
 
-
-
 const PortfolioItem = (props) => {
     const style = { border: "1px solid black", width: "430px" };
     const alignCenter = { textAlign: 'center' }
@@ -24,13 +22,14 @@ const PortfolioItem = (props) => {
                         if (item.quantity > 0) {
                             const value = (props.openPrice[item.symbol] * item.quantity).toFixed(2) === 'NaN' ? null : (props.openPrice[item.symbol] * item.quantity).toFixed(2)
                             const pricePerformance = Number(props.currPrice[item.symbol] - props.openPrice[item.symbol])
+                            //Handles dynamic color changes based on curr price and open price
                             const dynamicColor = performance => {
                                 if (performance > 0) return 'green'
                                 if (performance < 0) return 'red'
                                 if (performance === 0) return 'grey'
                                 return 'black'
                             }
-                            const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff", color: dynamicColor(pricePerformance), textAlign: 'center' };
+                            const dataStyle = { border: '1px solid black', backgroundColor: '#e6e6ff', color: dynamicColor(pricePerformance), textAlign: 'center' };
                             return (
                                 <tr key={item.id}>
                                     <td style={dataStyle}>{item.symbol}</td>
