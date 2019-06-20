@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux'
 import { iexToken } from '../../secrets'
 import PortfolioItem from './portfolio-list'
+import { updateUnique } from '../store/transactions'
 
 class Portfolio extends Component {
     constructor(props) {
@@ -43,6 +44,13 @@ class Portfolio extends Component {
         const res = await axios.get(`/api/transactions/unique/${id}`, {
             signal: this.controller.signal
         })
+        let portfolio = {}
+        res.data.map(item => {
+            const symbol = item.symbol
+            portfolio[symbol] = item
+        })
+
+        this.props.updateUniqueTransactions(portfolio)
         this.setState({ uniqueTransactions: res.data })
         const temp = {}
         const tempCurrPrice = {}
@@ -63,14 +71,14 @@ class Portfolio extends Component {
 
         this.timeOut = setTimeout(() => {
             this.setState({ openPrice: temp, currPrice: tempCurrPrice })
-        }, 500);
+        }, 100);
     }
 
     componentDidMount() {
         this.fetchTransactions(this.props.id)
         this.timeInterval = setInterval(() => {
             this.fetchTransactions(this.props.id)
-        }, 300)
+        }, 5000)
     }
 
     componentWillUnmount() {
@@ -89,4 +97,12 @@ const mapState = (state) => {
     }
 }
 
-export default connect(mapState)(Portfolio)
+const mapDispatch = (dispatch) => {
+    return {
+      updateUniqueTransactions: (transactions) => {
+        dispatch(updateUnique(transactions))
+      },
+    }
+  }
+
+export default connect(mapState, mapDispatch)(Portfolio)
