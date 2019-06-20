@@ -21,7 +21,6 @@ const PortfolioItem = (props) => {
                 </thead>
                 <tbody>
                     {props.portfolio.map(item => {
-                        console.log('port',item)
                         if (item.quantity > 0) {
                             const value = (props.openPrice[item.symbol] * item.quantity).toFixed(2) === 'NaN' ? null : (props.openPrice[item.symbol] * item.quantity).toFixed(2)
                             const pricePerformance = Number(props.currPrice[item.symbol] - props.openPrice[item.symbol])
@@ -31,7 +30,7 @@ const PortfolioItem = (props) => {
                                 if (performance === 0) return 'grey'
                                 return 'black'
                             }
-                            const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff", color: dynamicColor(pricePerformance) };
+                            const dataStyle = { border: "1px solid black", backgroundColor: "#e6e6ff", color: dynamicColor(pricePerformance), textAlign: 'center' };
                             return (
                                 <tr key={item.id}>
                                     <td style={dataStyle}>{item.symbol}</td>

@@ -20,6 +20,7 @@ class Transactions extends Component {
                             <th style={style}>Symbol</th>
                             <th style={style}>Shares</th>
                             <th style={style}>Price</th>
+                            <th style={style}>Transaction</th>
                             <th style={style}>Date</th>
                         </tr>
                     </thead>
@@ -30,12 +31,14 @@ class Transactions extends Component {
                             const month = datePurchased.getMonth() +1
                             const day = datePurchased.getDate()
                             const year =datePurchased.getFullYear()
-
+                            const transactionType = item.quantity > 0 ? 'Buy' : 'Sell'
+                            const transactionStyle = transactionType === 'Buy' ? {color: 'red', textAlign: 'center'} : {color: 'green', textAlign: 'center'}
                             return (
-                                <tr key={item.id}>
+                                <tr key={item.id} style={transactionStyle}>
                                     <td style={dataStyle}>{item.symbol}</td>
                                     <td style={dataStyle}>{item.quantity}</td>
                                     <td style={dataStyle}>$ {item.price}</td>
+                                    <td style={dataStyle}>{transactionType}</td>
                                     <td style={dataStyle}>{`${month}/${day}/${year}`}</td>
                                 </tr>
                             )
