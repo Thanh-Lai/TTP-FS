@@ -10,7 +10,7 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
   <div>
     <nav>
       {isLoggedIn ? (
-        <AppBar position="static">
+        <AppBar position="static" color="secondary">
           {/* The navbar will show these links after you log in */}
           <Tabs>
             <Link to="/home">Home</Link>
@@ -21,7 +21,7 @@ const Navbar = ({ handleClick, isLoggedIn }) => (
           </Tabs>
         </AppBar>
       ) : (
-          <AppBar>
+          <AppBar color="secondary">
             {/* The navbar will show these links before you log in */}
             <Tabs>
               <Link to="/login">Login</Link>
