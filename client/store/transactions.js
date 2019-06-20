@@ -1,17 +1,20 @@
 import axios from 'axios'
 
 //Action types
-const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
-const POST_TRANSACTION = 'POST_TRANSACTION';
+const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
+const POST_TRANSACTION = 'POST_TRANSACTION'
+const UPDATE_UNIQUE_TRANSACTIONS = 'UPDATE_UNIQUE_TRANSACTIONS'
 
 //Initial State
 const initialState = {
-    allTransactions: []
+    allTransactions: [],
+    uniqueTransactions: {}
 }
 
 //Action creators
 const getTransactions = allTransactions => ({type: GET_TRANSACTIONS, allTransactions})
 const createTransaction = transaction => ({type: POST_TRANSACTION, transaction})
+const updateUniqueTransactions = transactions => ({type: UPDATE_UNIQUE_TRANSACTIONS, transactions})
 
 //Thunk creators
 export const fetchTransactions = (id) => {
@@ -36,6 +39,12 @@ export const postTransaction = (transaction) => {
     }
 }
 
+export const updateUnique = (transactions) => {
+    return dispatch => {
+        dispatch(updateUniqueTransactions(transactions))
+    }
+}
+
 //Reducers
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -48,6 +57,11 @@ export default function (state = initialState, action) {
         return {
             ...state,
             allTransactions: [...state.allTransactions, action.transaction]
+        }
+      case UPDATE_UNIQUE_TRANSACTIONS:
+        return {
+            ...state,
+            uniqueTransactions: action.transactions
         }
       default:
         return state

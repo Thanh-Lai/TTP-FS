@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux'
 import { iexToken } from '../../secrets'
 import PortfolioItem from './portfolio-list'
+import { updateUnique } from '../store/transactions'
 
 class Portfolio extends Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class Portfolio extends Component {
         this.controller = new AbortController();
     }
 
+    // Fetch Open price
     fetchOHLC = async (symbol) => {
         try {
             return await axios.get(`https://cloud.iexapis.com/v1/stock/${symbol}/ohlc/?token=${iexToken}`, {
@@ -29,6 +31,7 @@ class Portfolio extends Component {
         }
     }
 
+    // Fetch Curr Price
     fetchCurrPrice = async (symbol) => {
         try {
             return await axios.get(`https://cloud.iexapis.com/v1/stock/${symbol}/price/?token=${iexToken}`, {
@@ -39,10 +42,18 @@ class Portfolio extends Component {
         }
     }
 
+    // Fetch all unique transactions
     fetchTransactions = async (id) => {
         const res = await axios.get(`/api/transactions/unique/${id}`, {
             signal: this.controller.signal
         })
+        let portfolio = {}
+        res.data.map(item => {
+            const symbol = item.symbol
+            portfolio[symbol] = item
+        })
+
+        this.props.updateUniqueTransactions(portfolio)
         this.setState({ uniqueTransactions: res.data })
         const temp = {}
         const tempCurrPrice = {}
@@ -63,16 +74,17 @@ class Portfolio extends Component {
 
         this.timeOut = setTimeout(() => {
             this.setState({ openPrice: temp, currPrice: tempCurrPrice })
-        }, 500);
+        }, 100);
     }
 
     componentDidMount() {
         this.fetchTransactions(this.props.id)
         this.timeInterval = setInterval(() => {
             this.fetchTransactions(this.props.id)
-        }, 300)
+        }, 500)
     }
 
+    // Clears asynchronous activities on unmount
     componentWillUnmount() {
         this.controller.abort()
         clearInterval(this.timeInterval)
@@ -89,4 +101,12 @@ const mapState = (state) => {
     }
 }
 
-export default connect(mapState)(Portfolio)
+const mapDispatch = (dispatch) => {
+    return {
+      updateUniqueTransactions: (transactions) => {
+        dispatch(updateUnique(transactions))
+      },
+    }
+  }
+
+export default connect(mapState, mapDispatch)(Portfolio)

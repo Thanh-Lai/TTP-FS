@@ -9,9 +9,10 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 /**
- * COMPONENT
+ * COMPONENT: Handles Auth
  */
 
+ //style for Material UI
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
@@ -53,7 +54,7 @@ const AuthForm = (props) => {
             variant="outlined"
             margin="normal"
             required
-            fullWidth
+            fullWidth ={true}
             id="userName"
             label="User Name"
             name="userName"
@@ -65,7 +66,7 @@ const AuthForm = (props) => {
             variant="outlined"
             margin="normal"
             required
-            fullWidth
+            fullWidth ={true}
             id="email"
             label="Email Address"
             name="email"
@@ -77,7 +78,7 @@ const AuthForm = (props) => {
             variant="outlined"
             margin="normal"
             required
-            fullWidth
+            fullWidth ={true}
             name="password"
             label="Password"
             type="password"
@@ -88,7 +89,7 @@ const AuthForm = (props) => {
           />
           <Button
             type="submit"
-            fullWidth
+            fullWidth ={true}
             variant="contained"
             color="primary"
             className={classes.submit}

@@ -17,16 +17,22 @@ class UserHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cash: 0
+      cash: 0,
+      buy: true
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSellChange = this.handleSellChange.bind(this)
+    this.handleBuyChange = this.handleBuyChange.bind(this)
     this.fetchStockPrice = this.fetchStockPrice.bind(this)
+    this.handleBuy = this.handleBuy.bind(this)
+    this.handleSell = this.handleSell.bind(this)
   }
 
   componentDidMount() {
     this.setState({
       cash: this.props.cash,
     })
+
   }
 
   fetchStockPrice = async (symbol) => {
@@ -37,22 +43,36 @@ class UserHome extends Component {
     }
   }
 
+  handleBuyChange() {
+    this.setState({ buy: true })
+  }
+
+  handleSellChange() {
+    this.setState({ buy: false })
+  }
 
   handleSubmit(event) {
     event.preventDefault()
     const symbol = event.target.symbol.value
     const quantity = event.target.quantity.value
-    console.log('sym', event.target.symbol.value)
+    if (this.state.buy) {
+      //Handle Buy if buy is true
+      this.handleBuy(symbol, quantity)
+    } else {
+      //Hanld Sell if buy is false
+      this.handleSell(symbol, quantity)
+    }
+  }
 
-    if (!Number.isInteger(Number(quantity)) || quantity <=0 ) alert('Please enter valid quantity.')
+  handleBuy(symbol, quantity) {
+    if (!Number.isInteger(Number(quantity)) || quantity <= 0) alert('Please enter valid quantity.')
     // Fetch stock price
     this.fetchStockPrice(symbol)
       .then(res => {
-        console.log('res', res)
         return res.data
       })
       .then(price => {
-        const transaction = (this.state.cash - Number((Number.parseFloat(price) * Number.parseFloat(quantity)))).toFixed(2)
+        const transaction = (Number(this.state.cash) - Number((Number.parseFloat(price) * Number.parseFloat(quantity)))).toFixed(2)
         //Only allows transaction if balance is greater than 0
         if (transaction <= 0) alert('Sorry you do not have enough cash.')
         if (quantity > 0 && transaction > 0 && !Number.isNaN(Number(price)) && Number.isInteger(Number(quantity))) {
@@ -69,7 +89,36 @@ class UserHome extends Component {
         console.log(err)
       })
   }
+
+  handleSell(symbol, quantity) {
+    if (!Number.isInteger(Number(quantity)) || quantity <= 0) alert('Please enter valid quantity.')
+    // Fetch stock price
+    if (this.props.uniqueTransactions[symbol] === undefined || this.props.uniqueTransactions[symbol].quantity <= 0) alert('You do not have enough stock to sell.')
+    this.fetchStockPrice(symbol)
+      .then(res => {
+        return res.data
+      })
+      .then(price => {
+        const transaction = (Number(this.state.cash) + Number((Number.parseFloat(price) * Number.parseFloat(quantity)))).toFixed(2)
+        //Only allows transaction if balance is greater than 0
+        console.log('sell', price, quantity, transaction)
+        if (quantity > 0 && transaction > 0 && !Number.isNaN(Number(price)) && Number.isInteger(Number(quantity))) {
+          this.setState({
+            cash: transaction
+          })
+          //Update Balance and addTransaction
+          this.props.updateBalance({ id: this.props.id, balance: transaction })
+          this.props.addTransaction({ symbol: symbol, quantity: -quantity, price: price, userId: this.props.id })
+        }
+      })
+      .catch(err => {
+        alert(`${symbol} is not a valid symbol.`)
+        console.log(err)
+      })
+  }
+
   render() {
+    // console.log('uni', this.props.uniqueTransactions)
 
     return (
       <div>
@@ -80,14 +129,14 @@ class UserHome extends Component {
             <CssBaseline />
             <div>
               <Typography component="h1" variant="h5">
-                     Get them while they're hot!
+                Get them while they're hot!
               </Typography>
               <form onSubmit={this.handleSubmit}>
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
-                  fullWidth
+                  fullWidth={true}
                   id="symbol"
                   label="Symbol"
                   name="symbol"
@@ -99,7 +148,7 @@ class UserHome extends Component {
                   variant="outlined"
                   margin="normal"
                   required
-                  fullWidth
+                  fullWidth={true}
                   id="quantity"
                   label="Quantity"
                   name="quantity"
@@ -109,11 +158,23 @@ class UserHome extends Component {
                 />
                 <Button
                   type="submit"
-                  fullWidth
+                  fullWidth={true}
                   variant="contained"
                   color="primary"
+                  onClick={this.handleBuyChange}
                 >
                   Buy
+                </Button>
+                <br />
+                <br />
+                <Button
+                  fullWidth={true}
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={this.handleSellChange}
+                >
+                  Sell
                 </Button>
               </form>
             </div>
@@ -135,7 +196,8 @@ const mapState = (state) => {
   return {
     userName: state.user.userName,
     cash: state.user.cash,
-    id: state.user.id
+    id: state.user.id,
+    uniqueTransactions: state.transactions.uniqueTransactions
   }
 }
 
